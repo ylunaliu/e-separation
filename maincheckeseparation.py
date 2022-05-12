@@ -32,19 +32,26 @@ def e_separation_list(graph, hidden_nodes):
     # Get all the nodes:
     for i in range(len(combination)):
         # Now I get a pair of nodes I can regenerate the powerset for the nodes
-        new_nodes = make_z_not_overlap_with_nodes(list(combination[i]), list(nodes))
+        new_nodes = remove_element_list(list(combination[i]), list(nodes))
         sets_z = powerset(new_nodes)
         for j in range(len(sets_z)):
-            w_nodes = make_z_not_overlap_with_nodes(sets_z[j], list(new_nodes))
+            w_nodes = remove_element_list(sets_z[j], list(new_nodes))
             sets_w = powerset(w_nodes)
-            sets_w = list(filter(None, sets_w))
             for k in range(len(sets_w)):
-                new_graph = graph.copy()
-                new_graph.remove_nodes_from(sets_w[k])
+                if(list(sets_w[k]) == []):
+                    new_graph = graph.copy()
+                else:
+                    new_graph = graph.copy()
+                    new_graph.remove_nodes_from(sets_w[k])
                 # print(f'upon remove of {sets_w[k]}')
                 # print(f'look at combination {combination[i]}')
                 if(check_d_separation_total(new_graph, combination[i], sets_z[j])==True):
                     print(f'{combination[i][0]} and {combination[i][1]} are e-separated by {sets_z[j]} upon deletion of {sets_w[k]}')
+
+
+def remove_element_list(list1, list2):
+    new_sets = list(set(list2).difference(list1))
+    return new_sets
 
 
 def make_z_not_overlap_with_nodes(pair, sets_z):

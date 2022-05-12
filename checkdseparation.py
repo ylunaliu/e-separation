@@ -8,8 +8,9 @@ def check_d_separation_total(graph, pair, z):
     edges = graph.edges
     # print(list(edges)==[])
     # Need to check
+    # print(list(edges))
     if(list(edges)==[]):
-        return False
+        return True
     else:
         # print(f'The edges is {graph.edges}')
         graph2 = nx.Graph()
@@ -23,23 +24,27 @@ def check_d_separation_total(graph, pair, z):
             paths = list(nx.all_simple_paths(graph2, pair[1], pair[0]))
         else:
             paths = list(nx.all_simple_paths(graph2, pair[0], pair[1]))
-        # print(f'The path for {pair[0]}, {pair[1]} is {paths}')
-        is_d_separate_path = []
-        # Preliminary check if there exits a path that's unblockable
-        if(preliminary_check(paths) == False):
-            return False
-        else:
-            for path in paths:
-                adjecent_nodes = create_list_adjencent_nodes(path)
-                property_list = create_list_property(adjecent_nodes, edges)
-                is_d_separate = check_d_separation(property_list, adjecent_nodes, z, graph)
-                is_d_separate_path.append(is_d_separate)
 
-            # Need to be true for all the 
-            if not False in is_d_separate_path:
-                return True
-            else:
+        if list(paths) == []:
+            return True
+        else:
+        # print(f'The path for {pair[0]}, {pair[1]} is {paths}')
+            is_d_separate_path = []
+            # Preliminary check if there exits a path that's unblockable
+            if(preliminary_check(paths) == False):
                 return False
+            else:
+                for path in paths:
+                    adjecent_nodes = create_list_adjencent_nodes(path)
+                    property_list = create_list_property(adjecent_nodes, edges)
+                    is_d_separate = check_d_separation(property_list, adjecent_nodes, z, graph)
+                    is_d_separate_path.append(is_d_separate)
+
+                # Need to be true for all the 
+                if not False in is_d_separate_path:
+                    return True
+                else:
+                    return False
 
 
 def preliminary_check(paths):
