@@ -6,29 +6,40 @@ import itertools
 
 def check_d_separation_total(graph, pair, z):
     edges = graph.edges
-    graph2 = nx.Graph()
-    graph2.add_edges_from(edges)
-    #pair is a list containg two nodes ['a', 'b']
-    #z is a set of variable containing a set of nodes ["a"]
-
-    #Create all the paths between the two nodes
-    paths = list(nx.all_simple_paths(graph2, pair[0], pair[1]))
-    is_d_separate_path = []
-    # Preliminary check if there exits a path that's unblockable
-    if(preliminary_check(paths) == False):
+    # print(list(edges)==[])
+    # Need to check
+    if(list(edges)==[]):
         return False
     else:
-        for path in paths:
-            adjecent_nodes = create_list_adjencent_nodes(path)
-            property_list = create_list_property(adjecent_nodes, edges)
-            is_d_separate = check_d_separation(property_list, adjecent_nodes, z, graph)
-            is_d_separate_path.append(is_d_separate)
+        # print(f'The edges is {graph.edges}')
+        graph2 = nx.Graph()
+        graph2.add_edges_from(edges)
+        # print(f'The nodes is {graph2.nodes}')
+        #pair is a list containg two nodes ['a', 'b']
+        #z is a set of variable containing a set of nodes ["a"]
 
-        # Need to be true for all the 
-        if not False in is_d_separate_path:
-            return True
+        #Create all the paths between the two nodes
+        if(pair[0] not in graph2.nodes):
+            paths = list(nx.all_simple_paths(graph2, pair[1], pair[0]))
         else:
+            paths = list(nx.all_simple_paths(graph2, pair[0], pair[1]))
+        # print(f'The path for {pair[0]}, {pair[1]} is {paths}')
+        is_d_separate_path = []
+        # Preliminary check if there exits a path that's unblockable
+        if(preliminary_check(paths) == False):
             return False
+        else:
+            for path in paths:
+                adjecent_nodes = create_list_adjencent_nodes(path)
+                property_list = create_list_property(adjecent_nodes, edges)
+                is_d_separate = check_d_separation(property_list, adjecent_nodes, z, graph)
+                is_d_separate_path.append(is_d_separate)
+
+            # Need to be true for all the 
+            if not False in is_d_separate_path:
+                return True
+            else:
+                return False
 
 
 def preliminary_check(paths):

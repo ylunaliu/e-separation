@@ -41,6 +41,8 @@ def d_separation_list(graph, hidden_nodes):
             for k in range(len(sets_w)):
                 new_graph = graph.copy()
                 new_graph.remove_nodes_from(sets_w[k])
+                # print(f'upon remove of {sets_w[k]}')
+                # print(f'look at combination {combination[i]}')
                 if(check_d_separation_total(new_graph, combination[i], sets_z[j])==True):
                     print(f'{combination[i][0]} and {combination[i][1]} are e-separated by {sets_z[j]} upon deletion of {sets_w[k]}')
 
@@ -62,12 +64,12 @@ if __name__ == "__main__":
     # print(set(descendants).isdisjoint(z))
 
     # Need to define the 11 graphs
-    # #2 Bell's seno
-    # graph_2 = nx.DiGraph()
-    # graph_2.add_edges_from([("B", "E"), ("A", "E"), ("A", "D"), ("C", "D")])
-    # graph_2_hidden = list(["A"])
-    # print("The d-separation for graph 2 is")
-    # d_separation_list(graph_2,graph_2_hidden)
+    #!!! Don't work: the graph fall apart 
+    #2 Bell's seno
+    graph_2 = nx.DiGraph()
+    graph_2.add_edges_from([("B", "E"), ("A", "E"), ("A", "D"), ("C", "D")])
+    graph_2_hidden = list(["A"])
+    d_separation_list(graph_2,graph_2_hidden)
 
 #     The d-separation for graph 2 is
 #     B and D are d-separated by []
@@ -78,33 +80,40 @@ if __name__ == "__main__":
 #     E and C are d-separated by []
 #     E and C are d-separated by ['B']
 
-    # #3 Unrelated confounder
+    # #3 Unrelated confounder Correct?
     # graph_3 = nx.DiGraph()
     # graph_3.add_edges_from([("A", "E"), ("C", "E"), ("C", "D"), ("A", "C"), ("B", "C"), ("B", "D")])
     # graph_3_hidden = list(["A", "B"])
     # d_separation_list(graph_3,graph_3_hidden)
 
-#     The d-separation for graph 3 is
-#     None
+#     The e-separation for graph 3 is
+#     E and D are e-separated by [] upon deletion of ['C']
 
-    # # Graph 1
+    # # Graph 1 ?
     # graph_1 = nx.DiGraph()
     # graph_1.add_edges_from([("A", "D"), ("A", "C"),("C", "D"), ("B", "C")])
     # graph_1_hidden = list(["A"])
     # d_separation_list(graph_1, graph_1_hidden)
 
-#     The d-separation for graph 1 is
-#     None
+#     The e-separation for graph 1 is
+#     D and B are e-separated by [] upon deletion of ['C']
 
 
-    # Graph 4
+    # Graph 4 maybe? Also can check for descendant?
     # graph_4 = nx.DiGraph()
     # graph_4.add_edges_from([("A", "F"), ("A", "C"), ("B", "C"), ("B", "E"), ("D", "E"), ("C", "F"), ("E", "F")])
     # graph_4_hidden = list(["A", "B"])
     # d_separation_list(graph_4, graph_4_hidden)
 
-#     The d-separation for graph 4 is
-#     C and D are d-separated by []
+#     The e-separation for graph 4 is
+    # F and D are e-separated by [] upon deletion of ['E']
+    # F and D are e-separated by [] upon deletion of ['C', 'E']
+    # F and D are e-separated by ['C'] upon deletion of ['E']
+    # F and D are e-separated by ['E'] upon deletion of ['C']
+    # C and D are e-separated by [] upon deletion of ['F']
+    # C and D are e-separated by [] upon deletion of ['E']
+    # C and D are e-separated by [] upon deletion of ['F', 'E']
+    # C and D are e-separated by ['F'] upon deletion of ['E']
 
 
     # Graph 5 
@@ -113,8 +122,15 @@ if __name__ == "__main__":
     # graph_5_hidden = list(["A", "B"])
     # d_separation_list(graph_5, graph_5_hidden)
 
-#     The d-separation for graph 5 is
-#     E and C are d-separated by ['D']
+#     The e-separation for graph 5 is
+# E and C are e-separated by [] upon deletion of ['D']
+# E and C are e-separated by [] upon deletion of ['F', 'D']
+# E and C are e-separated by ['F'] upon deletion of ['D']
+# E and C are e-separated by ['D'] upon deletion of ['F']
+# F and C are e-separated by [] upon deletion of ['E']
+# F and C are e-separated by [] upon deletion of ['D']
+# F and C are e-separated by [] upon deletion of ['E', 'D']
+# F and C are e-separated by ['E'] upon deletion of ['D']
 
 
     # Graph 16
@@ -124,7 +140,9 @@ if __name__ == "__main__":
     # d_separation_list(graph_16, graph_16_hidden)
 
 #     The d-separation for graph 16 is
-#     F and C are d-separated by []
+# F and C are e-separated by [] upon deletion of ['E']
+# F and C are e-separated by [] upon deletion of ['D']
+# F and C are e-separated by [] upon deletion of ['E', 'D']
     
     
     # Graph 17
@@ -133,8 +151,16 @@ if __name__ == "__main__":
     # graph_17_hidden = list(["A", "B"])
     # d_separation_list(graph_17, graph_17_hidden)
 
-#    The d-separation for graph 17 is
-#    C and D are d-separated by []
+#    The e-separation for graph 17 is
+# F and D are e-separated by [] upon deletion of ['E']
+# F and D are e-separated by [] upon deletion of ['C', 'E']
+# F and D are e-separated by ['C'] upon deletion of ['E']
+# F and D are e-separated by ['E'] upon deletion of ['C']
+# C and D are e-separated by [] upon deletion of ['F']
+# C and D are e-separated by [] upon deletion of ['E']
+# C and D are e-separated by [] upon deletion of ['F', 'E']
+# C and D are e-separated by ['F'] upon deletion of ['E']
+
 
 
     # Graph 18
@@ -144,8 +170,10 @@ if __name__ == "__main__":
     # graph_18_hidden = list(["A", "C"])
     # d_separation_list(graph_18, graph_18_hidden)
 
-#     The d-separation for graph 18 is
-#     None
+#     The e-separation for graph 18 is
+# F and B are e-separated by [] upon deletion of ['E']
+# F and B are e-separated by [] upon deletion of ['D', 'E']
+# F and B are e-separated by ['E'] upon deletion of ['D']
 
     # Graph 19
 
@@ -154,8 +182,10 @@ if __name__ == "__main__":
     # graph_19_hidden = list(["A", "C"])
     # d_separation_list(graph_19, graph_19_hidden)
 
-#     The d-separation for graph 19 is
-#     None
+#     The e-separation for graph 19 is
+# F and B are e-separated by [] upon deletion of ['E']
+# F and B are e-separated by [] upon deletion of ['D', 'E']
+# F and B are e-separated by ['E'] upon deletion of ['D']
 
 
     # Graph 20
@@ -164,14 +194,27 @@ if __name__ == "__main__":
     # graph_20_hidden = list(["A", "B"])
     # d_separation_list(graph_20, graph_20_hidden)
 
-#   E and C are d-separated by ['D']
-#   F and C are d-separated by []
+# E and C are e-separated by [] upon deletion of ['D']
+# E and C are e-separated by [] upon deletion of ['F', 'D']
+# E and C are e-separated by ['F'] upon deletion of ['D']
+# E and C are e-separated by ['D'] upon deletion of ['F']
+# F and C are e-separated by [] upon deletion of ['E']
+# F and C are e-separated by [] upon deletion of ['D']
+# F and C are e-separated by [] upon deletion of ['E', 'D']
+# F and C are e-separated by ['E'] upon deletion of ['D']
 
     # graph1 = nx.DiGraph()
     # graph1.add_edges_from([("s", "a"), ("l", "a"), ("l", "b"), ("t", "b")])
     # print(graph1.nodes)
     # hidden_nodes = ["b"]
     # d_separation_list(graph1, hidden_nodes)
+
+
+# Graphs in papaer 
+    # graph_c = nx.DiGraph()
+    # graph_c.add_edges_from([("A", "D"), ("D", "B"), ("U", "D"), ("U", "B")])
+    # graph_c_hidden = list(["U"])
+    # d_separation_list(graph_c, graph_c_hidden)
 
 
 # TCF 
@@ -182,7 +225,3 @@ if __name__ == "__main__":
     # d_separation_list(graph_20, graph_20_hidden_nodes)
 
     # None
-
-
-
-
